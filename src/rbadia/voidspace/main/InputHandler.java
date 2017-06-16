@@ -30,7 +30,7 @@ public class InputHandler implements KeyListener{
 	private boolean eIsPressed;
 	private boolean qIsPressed;
 	private boolean mIsPressed;
-
+	private boolean nIsPressed;
 	private long lastBulletTime;
 	private long lastExchangeTime;
 	private long lastBigBulletTime;
@@ -95,11 +95,18 @@ public class InputHandler implements KeyListener{
 
 					}
 				}
+				
 				else{
 
 				}
 			}
-
+			if(nIsPressed){
+				if((!status.isGameOver() && !status.isNewMegaMan() && !status.isGameStarting() && !status.isGameWon())){
+					//Need to be changed to whenever the user press N it should 
+					System.exit(0);
+				}
+				
+			}
 			//WIP
 			//			if(mIsPressed){
 			//				mute=1;
@@ -304,7 +311,13 @@ public class InputHandler implements KeyListener{
 				this.qIsPressed= true;
 			}
 			break;
-
+		case KeyEvent.VK_N:
+			if(!status.isGameStarted() && !status.isGameOver() && !status.isGameStarting() && !status.isGameWon()){		
+			}
+			else{
+				this.nIsPressed= true;
+			}
+			break;
 		case KeyEvent.VK_M:
 			this.mIsPressed= true;
 			break;
