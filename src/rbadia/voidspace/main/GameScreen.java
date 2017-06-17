@@ -66,7 +66,8 @@ public class GameScreen extends BaseScreen{
 	//private Platform[] platforms;
 
 	private int boom=0;
-	private int level=1;
+	public int level=1;
+	public int maxLevel = 3;
 	//private int damage=0;
 	//	private int scroll=0;
 	//	private int bossHealth=0;
@@ -166,10 +167,15 @@ public class GameScreen extends BaseScreen{
 		}
 
 		//if the game is won, draw the "You Win!!!" message
-		if(status.isGameWon()){
+		
+		if(status.isGameWon() ){
 			// draw the message
-			drawYouWin();
-
+			if(boom == 5){
+			YouPassedLevel_1();
+			}
+			else if(boom == 10){
+				YouPassedLevel_2();
+			}
 			long currentTime = System.currentTimeMillis();
 			// draw the explosions until their time passes
 			if((currentTime - lastAsteroidTime) < NEW_ASTEROID_DELAY){
@@ -177,6 +183,8 @@ public class GameScreen extends BaseScreen{
 			}
 			return;
 		}
+		
+		
 
 		// the game has not started yet
 		if(!status.isGameStarted()){
@@ -190,7 +198,7 @@ public class GameScreen extends BaseScreen{
 			graphicsMan.drawFloor(floor[i], g2d, this, i);	
 		}
 
-
+		
 		//		if(level==1){
 		//draw Platform LV. 1
 		for(int i=0; i<8; i++){
@@ -221,33 +229,39 @@ public class GameScreen extends BaseScreen{
 		}
 
 		// draw first asteroid
-		if(!status.isNewAsteroid() && boom <= 2){
+		if(!status.isNewAsteroid() && boom <= 5){
 			// draw the asteroid until it reaches the bottom of the screen
 
 			//LEVEL 1
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0) && (boom <= 5 || boom == 15)){
 				asteroid.translate(-asteroid.getSpeed(), 0);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
+				
 			}
-			else if (boom <= 5){
+			else if (boom <= 15){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
 			}	
+			
 		}
 
-		else if(!status.isNewAsteroid() && boom > 2){
+		else if(!status.isNewAsteroid() && boom > 5){
 			// draw the asteroid until it reaches the bottom of the screen
 			//LEVEL 2
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
 				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/2);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
 			}
-			else if (boom <= 5){
+			else if (boom <= 15){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
-			}	
+			}
+			
 		}
-
+		//LEVEL 3!!!!!!
+			
+		
+		
 		else{
 			long currentTime = System.currentTimeMillis();
 			if((currentTime - lastAsteroidTime) > NEW_ASTEROID_DELAY){
@@ -298,10 +312,7 @@ public class GameScreen extends BaseScreen{
 				removeAsteroid(asteroid);
 
 
-
-				if(boom != 5 && boom != 15){
-					boom=boom + 1;
-				}
+				boom++;
 				damage=0;
 				// remove bullet
 				bullets.remove(i);
@@ -318,11 +329,9 @@ public class GameScreen extends BaseScreen{
 
 				removeAsteroid(asteroid);
 
-
-
-				if(boom != 5 && boom != 15){
-					boom=boom + 1;
-				}
+			
+				boom++;
+				
 				damage=0;
 			}
 		}
@@ -342,13 +351,18 @@ public class GameScreen extends BaseScreen{
 		}
 		//
 
-		if(boom == 2)
+		if(boom == 5)
 			restructure();
-
+		
+		if(boom == 10)
+			restructure2();
+		
+		
 		status.getAsteroidsDestroyed();
 		status.getShipsLeft();
 		status.getLevel();
-
+		
+		
 		// update asteroids destroyed label  
 		destroyedValueLabel.setText(Long.toString(status.getAsteroidsDestroyed()));
 
@@ -388,7 +402,7 @@ public class GameScreen extends BaseScreen{
 		delayReset();
 	}
 
-	protected void drawYouWin() {
+	protected void YouPassedLevel_1() {
 		String youWinStr = "You Pass";
 
 		Font currentFont = biggestFont == null? bigFont : biggestFont;
@@ -418,7 +432,43 @@ public class GameScreen extends BaseScreen{
 		g2d.setPaint(Color.YELLOW);
 		g2d.drawString(newGameStr, strX, strY);
 
-		boom=3;	//Change value in order for the next level to start
+		boom = 6;	//Change value in order for the next level to start
+
+		//		boomReset();
+		//		healthReset();
+		//		delayReset();
+	}
+	protected void YouPassedLevel_2() {
+		String youWinStr = "You Pass";
+
+		Font currentFont = biggestFont == null? bigFont : biggestFont;
+		float fontSize = currentFont.getSize2D();
+		bigFont = currentFont.deriveFont(fontSize + 1).deriveFont(Font.BOLD);
+		FontMetrics fm = g2d.getFontMetrics(bigFont);
+		int strWidth = fm.stringWidth(youWinStr);
+		if(strWidth > this.getWidth() - 10){
+			biggestFont = currentFont;
+			bigFont = biggestFont;
+			fm = g2d.getFontMetrics(bigFont);
+			strWidth = fm.stringWidth(youWinStr);
+		}
+		int ascent = fm.getAscent();
+		int strX = (this.getWidth() - strWidth)/2;
+		int strY = (this.getHeight() + ascent)/2;
+		g2d.setFont(bigFont);
+		g2d.setPaint(Color.YELLOW);
+		g2d.drawString(youWinStr, strX, strY);
+
+		g2d.setFont(originalFont);
+		fm = g2d.getFontMetrics();
+		String newGameStr = "Next level starting soon";
+		strWidth = fm.stringWidth(newGameStr);
+		strX = (this.getWidth() - strWidth)/2;
+		strY = (this.getHeight() + fm.getAscent())/2 + ascent + 16;
+		g2d.setPaint(Color.YELLOW);
+		g2d.drawString(newGameStr, strX, strY);
+
+		boom = 11;	//Change value in order for the next level to start
 
 		//		boomReset();
 		//		healthReset();
@@ -550,6 +600,9 @@ public class GameScreen extends BaseScreen{
 		this.status = gameLogic.getStatus();
 		this.soundMan = gameLogic.getSoundMan();
 	}
+	
+	//If "N" is pressed it will request for a new level
+	
 
 	/**
 	 * Sets the label that displays the value for asteroids destroyed.
@@ -570,6 +623,8 @@ public class GameScreen extends BaseScreen{
 	public void setLevelValueLabel(JLabel levelValueLabel){
 		this.levelValueLabel = levelValueLabel;
 	}
+	
+	
 
 	public int getBoom(){
 		return boom;
@@ -650,6 +705,20 @@ public class GameScreen extends BaseScreen{
 		Platform[] platform = gameLogic.getNumPlatforms();
 		for(int i=0; i<8; i++){
 			if(i<4)	platform[i].setLocation(50+ i*50, getHeight()/2 + 140 - i*40);
+			if(i==4) platform[i].setLocation(50 +i*50, getHeight()/2 + 140 - 3*40);
+			if(i>4){	
+				int n=4;
+				platform[i].setLocation(50 + i*50, getHeight()/2 + 20 + (i-n)*40 );
+				n=n+2;
+			}
+		}
+		status.setLevel(status.getLevel() + 1);
+	}
+	
+	public void restructure2(){
+		Platform[] platform = gameLogic.getNumPlatforms();
+		for(int i=0; i<8; i++){
+			if(i<4)	platform[i].setLocation(50+ i*170, getHeight()/2 + 140 - i*40);
 			if(i==4) platform[i].setLocation(50 +i*50, getHeight()/2 + 140 - 3*40);
 			if(i>4){	
 				int n=4;

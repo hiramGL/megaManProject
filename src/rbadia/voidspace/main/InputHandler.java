@@ -101,11 +101,11 @@ public class InputHandler implements KeyListener{
 				}
 			}
 			if(nIsPressed){
-				if((!status.isGameOver() && !status.isNewMegaMan() && !status.isGameStarting() && !status.isGameWon())){
+				if((!status.isGameOver() && !status.isGameStarting() && !status.isGameWon())){
 					//Need to be changed to whenever the user press N it should pass to the next level. 
-					System.exit(0);
-				}
+					status.setLevel(status.getLevel()+ 1);
 				
+			}
 			}
 			//WIP
 			//			if(mIsPressed){

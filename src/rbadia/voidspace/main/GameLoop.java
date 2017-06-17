@@ -39,6 +39,9 @@ public class GameLoop implements Runnable{
 			gameLogic.checkConditions();
 			
 			// update the game graphics
+			if(gameScreen.level == 3){
+				
+			}
 			gameScreen.updateScreen();
 			
 			// handle input
