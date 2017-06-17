@@ -122,6 +122,8 @@ public class GameScreen extends BaseScreen{
 		Platform[] numPlatforms = gameLogic.getNumPlatforms();
 		List<Bullet> bullets = gameLogic.getBullets();
 		Asteroid asteroid = gameLogic.getAsteroid();
+		Asteroid asteroid1 = new Asteroid(this);
+		Asteroid asteroid2 = new Asteroid(this);
 		List<BigBullet> bigBullets = gameLogic.getBigBullets();
 		//		Asteroid asteroid2 = gameLogic.getAsteroid2();
 		//		BigAsteroid bigAsteroid = gameLogic.getBigAsteroid();
@@ -245,21 +247,38 @@ public class GameScreen extends BaseScreen{
 			
 		}
 
-		else if(!status.isNewAsteroid() && boom > 5){
+		else if(!status.isNewAsteroid() && boom <= 10){
 			// draw the asteroid until it reaches the bottom of the screen
 			//LEVEL 2
+			
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
 				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/2);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
+				
 			}
 			else if (boom <= 15){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
+				
 			}
 			
 		}
 		//LEVEL 3!!!!!!
+		else if(!status.isNewAsteroid() && boom > 10){
+			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
+				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/2);
+				graphicsMan.drawAsteroid(asteroid, g2d, this);	
+				
+			}
+			else if (boom <= 15){
+				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
+						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
+				
+			}
 			
+			
+			
+		}
 		
 		
 		else{
@@ -717,15 +736,15 @@ public class GameScreen extends BaseScreen{
 	
 	public void restructure2(){
 		Platform[] platform = gameLogic.getNumPlatforms();
-		for(int i=0; i<8; i++){
-			if(i<4)	platform[i].setLocation(50+ i*170, getHeight()/2 + 140 - i*40);
-			if(i==4) platform[i].setLocation(50 +i*50, getHeight()/2 + 140 - 3*40);
-			if(i>4){	
-				int n=4;
-				platform[i].setLocation(50 + i*50, getHeight()/2 + 20 + (i-n)*40 );
-				n=n+2;
-			}
-		}
+		platform[0].setLocation(50+ 1*50, getHeight()/2 + 140 - 0*40);
+		platform[1].setLocation(100+ 2*50 -5 ,getHeight()/2 + 140 - 1*40);
+		platform[2].setLocation(50+ 1*50 ,getHeight()/2 + 140 - 2*40);
+		platform[3].setLocation(100+  2*50 -5 ,getHeight()/2 + 140 - 3*40);
+		platform[4].setLocation(100+  4*50  ,getHeight()/2 + 140 - 3*40);
+		platform[5].setLocation(100+  6*50 -5 ,getHeight()/2 + 140 - 2*40);
+		platform[6].setLocation(100+ 4*50  ,getHeight()/2 + 140 - 1*40);
+		platform[7].setLocation(100+ 6*50 - 5  ,getHeight()/2 + 140 - 0*40);
+		
 		status.setLevel(status.getLevel() + 1);
 	}
 
