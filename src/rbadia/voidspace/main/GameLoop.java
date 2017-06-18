@@ -1,5 +1,7 @@
 package rbadia.voidspace.main;
 
+import rbadia.voidspace.graphics.GraphicsManager;
+
 /**
  * Implements the main game loop, i.e. what actions should be taken on each frame update.
  */
@@ -7,6 +9,7 @@ public class GameLoop implements Runnable{
 	private GameScreen gameScreen;
 //	private GameScreen2 gameScreen2;
 	private GameLogic gameLogic;
+	private GraphicsManager graphicsManager;
 	private InputHandler inputHandler;
 
 	/**

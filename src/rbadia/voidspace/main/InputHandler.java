@@ -103,7 +103,7 @@ public class InputHandler implements KeyListener{
 			if(nIsPressed){
 				if((!status.isGameOver() && !status.isGameStarting() && !status.isGameWon())){
 					//Need to be changed to whenever the user press N it should pass to the next level. 
-					status.setLevel(status.getLevel()+ 1);
+					
 				
 			}
 			}

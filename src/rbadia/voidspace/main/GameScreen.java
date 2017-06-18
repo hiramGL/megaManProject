@@ -1,6 +1,5 @@
 package rbadia.voidspace.main;
 import java.awt.Color;
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -12,13 +11,12 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import rbadia.voidspace.graphics.GraphicsManager;
 import rbadia.voidspace.model.Asteroid;
 import rbadia.voidspace.model.BigBullet;
+import rbadia.voidspace.model.Boss;
 import rbadia.voidspace.model.Bullet;
-import rbadia.voidspace.model.BulletBoss;
 import rbadia.voidspace.model.Floor;
 import rbadia.voidspace.model.MegaMan;
 import rbadia.voidspace.model.Platform;
@@ -53,11 +51,15 @@ public class GameScreen extends BaseScreen{
 	private JLabel levelValueLabel;
 
 	private Random rand;
+	private int randNum1;
+	private int randNum2;
 
 	private Font originalFont;
 	private Font bigFont;
 	private Font biggestFont;
-
+	
+	private Boss bosslevel3;
+	
 	private GameStatus status;
 	private SoundManager soundMan;
 	private GraphicsManager graphicsMan;
@@ -144,8 +146,11 @@ public class GameScreen extends BaseScreen{
 		g2d.fillRect(0, 0, getSize().width, getSize().height);
 
 		// draw 50 random stars
-		drawStars(50);
+		
+		if(level != 3){
 
+		drawStars(50);
+		}
 		// if the game is starting, draw "Get Ready" message
 		if(status.isGameStarting()){
 			drawGetReady();
@@ -172,10 +177,10 @@ public class GameScreen extends BaseScreen{
 		
 		if(status.isGameWon() ){
 			// draw the message
-			if(boom == 5){
+			if(getBoom() == 5){
 			YouPassedLevel_1();
 			}
-			else if(boom == 10){
+			else if(getBoom() == 10){
 				YouPassedLevel_2();
 			}
 			long currentTime = System.currentTimeMillis();
@@ -196,6 +201,7 @@ public class GameScreen extends BaseScreen{
 		}
 
 		//draw Floor
+		
 		for(int i=0; i<9; i++){
 			graphicsMan.drawFloor(floor[i], g2d, this, i);	
 		}
@@ -231,23 +237,23 @@ public class GameScreen extends BaseScreen{
 		}
 
 		// draw first asteroid
-		if(!status.isNewAsteroid() && boom <= 5){
+		if(!status.isNewAsteroid() && getBoom() <= 5){
 			// draw the asteroid until it reaches the bottom of the screen
 
 			//LEVEL 1
-			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0) && (boom <= 5 || boom == 15)){
+			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0) && (getBoom() <= 5 || getBoom() == 15)){
 				asteroid.translate(-asteroid.getSpeed(), 0);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
 				
 			}
-			else if (boom <= 15){
+			else if (getBoom() <= 15){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
 			}	
 			
 		}
 
-		else if(!status.isNewAsteroid() && boom <= 10){
+		else if(!status.isNewAsteroid() && getBoom() <= 10){
 			// draw the asteroid until it reaches the bottom of the screen
 			//LEVEL 2
 			
@@ -256,7 +262,7 @@ public class GameScreen extends BaseScreen{
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
 				
 			}
-			else if (boom <= 15){
+			else if (getBoom() <= 15){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
 				
@@ -264,21 +270,28 @@ public class GameScreen extends BaseScreen{
 			
 		}
 		//LEVEL 3!!!!!!
-		else if(!status.isNewAsteroid() && boom > 10){
+		else if(!status.isNewAsteroid() && getBoom() > 10){
+			//Making Asteroid speed random
+			randNum1 = rand.nextInt(3);
+			randNum2 = rand.nextInt(3);
+			while(randNum1 == 0){
+				randNum1 = rand.nextInt(3);
+			}
+			while(randNum2 == 0){
+				randNum2 = rand.nextInt(3);
+			}
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
-				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/2);
+				System.out.println("Arrived");
+				asteroid.translate(-asteroid.getSpeed()* randNum1, asteroid.getSpeed()/randNum2);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
 				
 			}
-			else if (boom <= 15){
+			else if (getBoom() > 10){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
 				
 			}
-			
-			
-			
-		}
+			}
 		
 		
 		else{
@@ -331,7 +344,7 @@ public class GameScreen extends BaseScreen{
 				removeAsteroid(asteroid);
 
 
-				boom++;
+				setBoom(getBoom() + 1);
 				damage=0;
 				// remove bullet
 				bullets.remove(i);
@@ -349,7 +362,7 @@ public class GameScreen extends BaseScreen{
 				removeAsteroid(asteroid);
 
 			
-				boom++;
+				setBoom(getBoom() + 1);
 				
 				damage=0;
 			}
@@ -370,10 +383,10 @@ public class GameScreen extends BaseScreen{
 		}
 		//
 
-		if(boom == 5)
+		if(getBoom() == 5)
 			restructure();
 		
-		if(boom == 10)
+		if(getBoom() == 10)
 			restructure2();
 		
 		
@@ -421,7 +434,7 @@ public class GameScreen extends BaseScreen{
 		delayReset();
 	}
 
-	protected void YouPassedLevel_1() {
+	public void YouPassedLevel_1() {
 		String youWinStr = "You Pass";
 
 		Font currentFont = biggestFont == null? bigFont : biggestFont;
@@ -451,7 +464,7 @@ public class GameScreen extends BaseScreen{
 		g2d.setPaint(Color.YELLOW);
 		g2d.drawString(newGameStr, strX, strY);
 
-		boom = 6;	//Change value in order for the next level to start
+		setBoom(6);	//Change value in order for the next level to start
 
 		//		boomReset();
 		//		healthReset();
@@ -487,7 +500,7 @@ public class GameScreen extends BaseScreen{
 		g2d.setPaint(Color.YELLOW);
 		g2d.drawString(newGameStr, strX, strY);
 
-		boom = 11;	//Change value in order for the next level to start
+		setBoom(11);	//Change value in order for the next level to start
 
 		//		boomReset();
 		//		healthReset();
@@ -649,16 +662,16 @@ public class GameScreen extends BaseScreen{
 		return boom;
 	}
 	public int boomReset(){
-		boom= 0;
-		return boom;
+		setBoom(0);
+		return getBoom();
 	}
 	public long healthReset(){
-		boom= 0;
-		return boom;
+		setBoom(0);
+		return getBoom();
 	}
 	public long delayReset(){
-		boom= 0;
-		return boom;
+		setBoom(0);
+		return getBoom();
 	}
 
 	protected boolean Gravity(){
@@ -761,5 +774,9 @@ public class GameScreen extends BaseScreen{
 
 		// play asteroid explosion sound
 		soundMan.playAsteroidExplosionSound();
+	}
+
+	public void setBoom(int boom) {
+		this.boom = boom;
 	}
 }
