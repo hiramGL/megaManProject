@@ -30,7 +30,15 @@ public class InputHandler implements KeyListener{
 	private boolean eIsPressed;
 	private boolean qIsPressed;
 	private boolean mIsPressed;
-	private boolean nIsPressed;
+	private boolean nIsPressed = false;
+	public boolean isnIsPressed() {
+		return nIsPressed;
+	}
+
+	public void setnIsPressed(boolean nIsPressed) {
+		this.nIsPressed = nIsPressed;
+	}
+
 	private long lastBulletTime;
 	private long lastExchangeTime;
 	private long lastBigBulletTime;
@@ -103,6 +111,7 @@ public class InputHandler implements KeyListener{
 			if(nIsPressed){
 				if((!status.isGameOver() && !status.isGameStarting() && !status.isGameWon())){
 					//Need to be changed to whenever the user press N it should pass to the next level. 
+					gameLogic.nextLvl();
 					
 				
 			}
@@ -362,8 +371,13 @@ public class InputHandler implements KeyListener{
 		case KeyEvent.VK_M:
 			this.mIsPressed = false;
 			break;
-		}
+		
+		
+		case KeyEvent.VK_N:
+			this.nIsPressed = false;
+			
 		e.consume();
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {

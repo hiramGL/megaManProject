@@ -62,6 +62,12 @@ public class Boss extends Rectangle {
 		return bossHeight;
 	}
 	
+	public void activate(){
+		if(this.getWidth() < getWidth()){
+			this.translate(getDefaultSpeed(), 0);
+		}
+	}
+	
 	/**
 	 * Returns the current ship speed
 	 * @return the current ship speed

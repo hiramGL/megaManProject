@@ -60,6 +60,16 @@ public class GameScreen extends BaseScreen{
 	
 	private Boss bosslevel3;
 	
+	private boolean nextLvl = false;
+	public boolean isNextLvl() {
+		return nextLvl;
+	}
+
+	public void setNextLvl(boolean nextLvl) {
+		this.nextLvl = nextLvl;
+		System.out.println("level pass!");
+	}
+
 	private GameStatus status;
 	private SoundManager soundMan;
 	private GraphicsManager graphicsMan;
@@ -126,9 +136,9 @@ public class GameScreen extends BaseScreen{
 		Platform[] numPlatforms = gameLogic.getNumPlatforms();
 		List<Bullet> bullets = gameLogic.getBullets();
 		Asteroid asteroid = gameLogic.getAsteroid();
-		Asteroid asteroid1 = new Asteroid(this);
-		Asteroid asteroid2 = new Asteroid(this);
-		Boss boss3 = new Boss(this);
+		Asteroid asteroid1 = gameLogic.getAsteroid();
+		Asteroid asteroid2 = gameLogic.getAsteroid();
+		Boss boss3 = gameLogic.getBoss();
 		List<BigBullet> bigBullets = gameLogic.getBigBullets();
 		//		Asteroid asteroid2 = gameLogic.getAsteroid2();
 		//		BigAsteroid bigAsteroid = gameLogic.getBigAsteroid();
@@ -149,18 +159,30 @@ public class GameScreen extends BaseScreen{
 		g2d.fillRect(0, 0, getSize().width, getSize().height);
 		
 		
-		//always checking for request to pass level(N)
+		
 		
 		
 		//draw Background Image of level 3
 		if(boom > 10){
 		g2d.drawImage(graphicsMan.backgroundImg, 0, 0, this);
 		//Draw Boss in top of the screen
-		graphicsMan.drawBoss(boss3, g2d, this);
+	
 		}
-
+		
+		//always checking for request to pass level(N)
+		if(nextLvl && boom < 5){
+			restructure();
+			this.YouPassedLevel_1();
+			this.setNextLvl(false);
+		}
+		if(nextLvl && (boom > 5 && boom < 10)){
+			restructure2();
+			this.YouPassedLevel_2();
+			this.setNextLvl(false);
+		}
+		
 		// draw 50 random stars
-
+		if(boom < 10)
 		drawStars(50);
 		
 		// if the game is starting, draw "Get Ready" message
@@ -289,7 +311,7 @@ public class GameScreen extends BaseScreen{
 		//LEVEL 3!!!!!!
 		else if(!status.isNewAsteroid() && getBoom() > 10){
 			        
-			
+			boss3.activate();
 			//Making Asteroid speed random
 			randNum1 = rand.nextInt(3);
 			randNum2 = rand.nextInt(5);
@@ -301,14 +323,14 @@ public class GameScreen extends BaseScreen{
 				
 				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/randNum2);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);
-//				boss3.translate(-boss3.getSpeed3(), boss3.getSpeed3()/2);
+
 				
 				
 			}
 			else if (getBoom() > 10){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
-//				boss3.setLocation(getWidth()/2, getHeight() + boss3.height);
+				
 				
 			}
 			}

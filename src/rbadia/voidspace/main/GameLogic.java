@@ -194,6 +194,11 @@ public class GameLogic {
 		}
 
 	}
+	
+	public void nextLvl(){
+		
+		gameScreen.setNextLvl(true);
+	}
 
 	/**
 	 * Actions to take if game is won.
