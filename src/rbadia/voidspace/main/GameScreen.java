@@ -64,7 +64,7 @@ public class GameScreen extends BaseScreen{
 	private SoundManager soundMan;
 	private GraphicsManager graphicsMan;
 	private GameLogic gameLogic;
-	//private InputHandler input;
+	private InputHandler input;
 	//private Platform[] platforms;
 
 	private int boom=0;
@@ -128,6 +128,7 @@ public class GameScreen extends BaseScreen{
 		Asteroid asteroid = gameLogic.getAsteroid();
 		Asteroid asteroid1 = new Asteroid(this);
 		Asteroid asteroid2 = new Asteroid(this);
+		Boss boss3 = new Boss(this);
 		List<BigBullet> bigBullets = gameLogic.getBigBullets();
 		//		Asteroid asteroid2 = gameLogic.getAsteroid2();
 		//		BigAsteroid bigAsteroid = gameLogic.getBigAsteroid();
@@ -146,17 +147,22 @@ public class GameScreen extends BaseScreen{
 		// erase screen
 		g2d.setPaint(Color.BLACK);
 		g2d.fillRect(0, 0, getSize().width, getSize().height);
-		//draw Background Image
+		
+		
+		//always checking for request to pass level(N)
+		
+		
+		//draw Background Image of level 3
 		if(boom > 10){
 		g2d.drawImage(graphicsMan.backgroundImg, 0, 0, this);
+		//Draw Boss in top of the screen
+		graphicsMan.drawBoss(boss3, g2d, this);
 		}
 
 		// draw 50 random stars
-		
-		if(level != 3){
 
 		drawStars(50);
-		}
+		
 		// if the game is starting, draw "Get Ready" message
 		if(status.isGameStarting()){
 			drawGetReady();
@@ -184,9 +190,12 @@ public class GameScreen extends BaseScreen{
 		if(status.isGameWon() ){
 			// draw the message
 			if(getBoom() == 5){
+				restructure();
 			YouPassedLevel_1();
+			
 			}
 			else if(getBoom() == 10){
+				restructure2();
 				YouPassedLevel_2();
 			}
 			long currentTime = System.currentTimeMillis();
@@ -279,7 +288,7 @@ public class GameScreen extends BaseScreen{
 		}
 		//LEVEL 3!!!!!!
 		else if(!status.isNewAsteroid() && getBoom() > 10){
-			
+			        
 			
 			//Making Asteroid speed random
 			randNum1 = rand.nextInt(3);
@@ -291,12 +300,15 @@ public class GameScreen extends BaseScreen{
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
 				
 				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/randNum2);
-				graphicsMan.drawAsteroid(asteroid, g2d, this);	
+				graphicsMan.drawAsteroid(asteroid, g2d, this);
+//				boss3.translate(-boss3.getSpeed3(), boss3.getSpeed3()/2);
+				
 				
 			}
 			else if (getBoom() > 10){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
+//				boss3.setLocation(getWidth()/2, getHeight() + boss3.height);
 				
 			}
 			}
@@ -389,13 +401,9 @@ public class GameScreen extends BaseScreen{
 
 			}
 		}
-		//
-
-		if(getBoom() == 5)
-			restructure();
 		
-		if(getBoom() == 10)
-			restructure2();
+
+
 		
 		
 		status.getAsteroidsDestroyed();

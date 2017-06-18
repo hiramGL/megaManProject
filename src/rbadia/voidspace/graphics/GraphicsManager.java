@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import rbadia.voidspace.model.Asteroid;
 //import rbadia.voidspace.model.BigAsteroid;
 import rbadia.voidspace.model.BigBullet;
+import rbadia.voidspace.model.Boss;
 //import rbadia.voidspace.model.Boss;
 import rbadia.voidspace.model.Bullet;
 import rbadia.voidspace.model.Floor;
@@ -35,7 +36,7 @@ public class GraphicsManager {
 	private BufferedImage asteroidExplosionImg;
 	private BufferedImage megaManExplosionImg;
 
-	//	private BufferedImage bossImg;
+		private BufferedImage bossImg;
 	//	private BufferedImage bossImg2;
 	//	private BufferedImage bigAsteroidImg;
 	private BufferedImage bigAsteroidExplosionImg;
@@ -52,7 +53,7 @@ public class GraphicsManager {
 			this.megaFireRImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/megaFireRight.png"));
 			this.floorImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/megaFloor.png"));
 			this.platformImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/platform3.png"));
-			//			this.bossImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/boss1.png"));
+						this.bossImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/boss1.png"));
 			//			this.bossImg2 = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/boss2.png"));
 			this.asteroidImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/asteroid.png"));
 			this.asteroidExplosionImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/asteroidExplosion.png"));
@@ -133,6 +134,10 @@ public class GraphicsManager {
 	 */
 	public void drawAsteroid(Asteroid asteroid, Graphics2D g2d, ImageObserver observer) {
 		g2d.drawImage(asteroidImg, asteroid.x, asteroid.y, observer);
+	}
+	
+	public void drawBoss(Boss boss, Graphics2D g2d,ImageObserver observer){
+		g2d.drawImage(bossImg, boss.x,boss.y, observer);
 	}
 
 	/**
