@@ -59,6 +59,8 @@ public abstract class BaseScreen extends JPanel {
 	
 	protected abstract void initialize();
 	
+	
+	
 	protected abstract void updateScreen();	
 	
 	protected abstract void drawGameOver();

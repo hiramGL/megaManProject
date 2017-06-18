@@ -30,7 +30,7 @@ public class GameScreen extends BaseScreen{
 
 	private BufferedImage backBuffer;
 	private Graphics2D g2d;
-
+	
 	private static final int NEW_SHIP_DELAY = 500;
 	private static final int NEW_ASTEROID_DELAY = 500;
 	//	private static final int NEW_ASTEROID_2_DELAY = 500;
@@ -93,6 +93,7 @@ public class GameScreen extends BaseScreen{
 		// init back buffer image
 		backBuffer = new BufferedImage(500, 400, BufferedImage.TYPE_INT_RGB);
 		g2d = backBuffer.createGraphics();
+		
 	}
 
 	/**
@@ -103,6 +104,7 @@ public class GameScreen extends BaseScreen{
 		this.setSize(new Dimension(500, 400));
 		this.setPreferredSize(new Dimension(500, 400));
 		this.setBackground(Color.BLACK);
+		
 	}
 
 	/**
@@ -144,6 +146,10 @@ public class GameScreen extends BaseScreen{
 		// erase screen
 		g2d.setPaint(Color.BLACK);
 		g2d.fillRect(0, 0, getSize().width, getSize().height);
+		//draw Background Image
+		if(boom > 10){
+		g2d.drawImage(graphicsMan.backgroundImg, 0, 0, this);
+		}
 
 		// draw 50 random stars
 		
@@ -246,6 +252,8 @@ public class GameScreen extends BaseScreen{
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
 				
 			}
+		
+			
 			else if (getBoom() <= 15){
 				asteroid.setLocation(this.getWidth() - asteroid.getAsteroidWidth(),
 						rand.nextInt(this.getHeight() - asteroid.getAsteroidHeight() - 32));
@@ -271,18 +279,18 @@ public class GameScreen extends BaseScreen{
 		}
 		//LEVEL 3!!!!!!
 		else if(!status.isNewAsteroid() && getBoom() > 10){
+			
+			
 			//Making Asteroid speed random
 			randNum1 = rand.nextInt(3);
-			randNum2 = rand.nextInt(3);
-			while(randNum1 == 0){
-				randNum1 = rand.nextInt(3);
-			}
+			randNum2 = rand.nextInt(5);
+			
 			while(randNum2 == 0){
 				randNum2 = rand.nextInt(3);
 			}
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
-				System.out.println("Arrived");
-				asteroid.translate(-asteroid.getSpeed()* randNum1, asteroid.getSpeed()/randNum2);
+				
+				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/randNum2);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);	
 				
 			}

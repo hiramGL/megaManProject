@@ -26,7 +26,7 @@ public class GraphicsManager {
 	private BufferedImage megaManImg;
 	private BufferedImage megaFallRImg;
 	private BufferedImage megaFireRImg;
-	private BufferedImage backgroundImg;
+	public BufferedImage backgroundImg;
 	private BufferedImage floorImg;
 	private BufferedImage platformImg;
 	private BufferedImage bulletImg;
