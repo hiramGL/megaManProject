@@ -32,6 +32,7 @@ public class GraphicsManager {
 	private BufferedImage platformImg;
 	private BufferedImage bulletImg;
 	private BufferedImage bigBulletImg;
+	private BufferedImage bossBulletImg;
 	private BufferedImage asteroidImg;
 	private BufferedImage asteroidExplosionImg;
 	private BufferedImage megaManExplosionImg;
@@ -59,6 +60,7 @@ public class GraphicsManager {
 			this.asteroidExplosionImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/asteroidExplosion.png"));
 			//this.megaManExplosionImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/megaManExplosion.png"));
 			this.bulletImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/bullet.png"));
+			this.bossBulletImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/bigBullet.png"));
 			this.bigBulletImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/bigBullet.png"));
 			//			this.bigAsteroidImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/BigAsteroid.png"));
 			//			this.bigAsteroidExplosionImg = ImageIO.read(getClass().getResource("/rbadia/voidspace/graphics/bigAsteroidExplosion.png"));
@@ -125,6 +127,10 @@ public class GraphicsManager {
 	public void drawBigBullet(BigBullet bigBullet, Graphics2D g2d, ImageObserver observer) {
 		g2d.drawImage(bigBulletImg, bigBullet.x, bigBullet.y, observer);
 	}
+	public void drawBssBullet(BigBullet bigBullet, Graphics2D g2d, ImageObserver observer) {
+		g2d.drawImage(bossBulletImg, bigBullet.x, bigBullet.y, observer);
+	}
+	
 
 	/**
 	 * Draws an asteroid image to the specified graphics canvas.

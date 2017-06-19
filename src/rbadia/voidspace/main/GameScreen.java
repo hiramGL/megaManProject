@@ -17,6 +17,7 @@ import rbadia.voidspace.model.Asteroid;
 import rbadia.voidspace.model.BigBullet;
 import rbadia.voidspace.model.Boss;
 import rbadia.voidspace.model.Bullet;
+import rbadia.voidspace.model.BulletBoss;
 import rbadia.voidspace.model.Floor;
 import rbadia.voidspace.model.MegaMan;
 import rbadia.voidspace.model.Platform;
@@ -67,7 +68,7 @@ public class GameScreen extends BaseScreen{
 
 	public void setNextLvl(boolean nextLvl) {
 		this.nextLvl = nextLvl;
-		System.out.println("level pass!");
+		
 	}
 
 	private GameStatus status;
@@ -142,7 +143,7 @@ public class GameScreen extends BaseScreen{
 		List<BigBullet> bigBullets = gameLogic.getBigBullets();
 		//		Asteroid asteroid2 = gameLogic.getAsteroid2();
 		//		BigAsteroid bigAsteroid = gameLogic.getBigAsteroid();
-		//		List<BulletBoss> bulletsBoss = gameLogic.getBulletBoss();
+				List<BulletBoss> bulletsBoss = gameLogic.getBulletBoss();
 		//		List<BulletBoss2> bulletsBoss2 = gameLogic.getBulletBoss2();		
 		//		Boss boss = gameLogic.getBoss();
 		//		Boss boss2 = gameLogic.getBoss2();
@@ -309,9 +310,26 @@ public class GameScreen extends BaseScreen{
 			
 		}
 		//LEVEL 3!!!!!!
+		//Making a Boss in top of the screen
+		else if(!status.isNewBoss() && getBoom() > 10){
+			if(boss3.getX() + boss3.getBossWidth() >= 0){
+				if(boss3.crash()){
+					boss3.setSpeed(boss3.getSpeed3()*-1);
+					
+				}
+				boss3.translate(   boss3.getSpeed3(), 0);	
+				graphicsMan.drawBoss(boss3, g2d, this);
+				gameLogic.fireBulletBoss();
+				
+				}
+				
+			}
+		
+		
+			
 		else if(!status.isNewAsteroid() && getBoom() > 10){
 			        
-			boss3.activate();
+			
 			//Making Asteroid speed random
 			randNum1 = rand.nextInt(3);
 			randNum2 = rand.nextInt(5);
@@ -321,7 +339,7 @@ public class GameScreen extends BaseScreen{
 			}
 			if((asteroid.getX() + asteroid.getAsteroidWidth() >  0)){
 				
-				asteroid.translate(-asteroid.getSpeed(), asteroid.getSpeed()/randNum2);
+				asteroid.translate(-asteroid.getSpeed() * randNum1, asteroid.getSpeed()/randNum2);
 				graphicsMan.drawAsteroid(asteroid, g2d, this);
 
 				
@@ -375,7 +393,19 @@ public class GameScreen extends BaseScreen{
 				i--;
 			}
 		}
+		
+		//draw boss bullet
+		for(int i=0; i<bigBullets.size(); i++){
+			BigBullet bossBullet = bigBullets.get(i);
+			graphicsMan.drawBigBullet(bossBullet, g2d, this);
 
+			boolean remove = gameLogic.moveBigBullet(bossBullet);
+			if(remove){
+				bigBullets.remove(i);
+				i--;
+			}
+		}
+		
 		// check bullet-asteroid collisions
 		for(int i=0; i<bullets.size(); i++){
 			Bullet bullet = bullets.get(i);

@@ -21,6 +21,7 @@ public class BigBullet extends Rectangle {
 		this.setSize(bigBulletWidth, bigBulletHeight);
 	}
 	
+	
 
 
 	/**

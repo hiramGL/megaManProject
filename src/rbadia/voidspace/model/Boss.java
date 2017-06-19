@@ -3,6 +3,7 @@ package rbadia.voidspace.model;
 import java.awt.Rectangle;
 
 import rbadia.voidspace.main.GameScreen;
+import rbadia.voidspace.main.MainFrame;
 
 /**
  * Represents a ship/space craft.
@@ -11,7 +12,7 @@ import rbadia.voidspace.main.GameScreen;
 public class Boss extends Rectangle {
 	private static final long serialVersionUID = 1L;
 	
-	public static final int DEFAULT_SPEED3 = 4;
+	public static final int DEFAULT_SPEED3 = -4;
 	private static final int Y_OFFSET = 325; // initial y distance of the ship from the bottom of the screen 
 	
 	private int bossWidth = 75;
@@ -19,6 +20,7 @@ public class Boss extends Rectangle {
 	private int bossWidth2 = 110;
 	private int bossHeight2 = 100;
 	private int speed3 = DEFAULT_SPEED3;
+	private MainFrame frame;
 	
 	/**
 	 * Creates a new ship at the default initial location. 
@@ -37,7 +39,21 @@ public class Boss extends Rectangle {
 	public int getBossWidth() {
 		return bossWidth;
 	}
+	/**
+	 * True if the boss crash with screen laterals
+	 * @return
+	 */
 	
+	public boolean crash(){
+		boolean crashed = false;
+		if(this.x == 0 || this.x == 424){
+			
+			crashed = true;
+		}
+		
+		return crashed;
+		
+	}
 	/**
 	 * Get the default ship height
 	 * @return the default ship height
@@ -62,11 +78,7 @@ public class Boss extends Rectangle {
 		return bossHeight;
 	}
 	
-	public void activate(){
-		if(this.getWidth() < getWidth()){
-			this.translate(getDefaultSpeed(), 0);
-		}
-	}
+	
 	
 	/**
 	 * Returns the current ship speed

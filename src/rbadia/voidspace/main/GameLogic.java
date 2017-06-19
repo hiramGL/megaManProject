@@ -194,7 +194,9 @@ public class GameLogic {
 		}
 
 	}
-	
+	/**
+	 * next level request, have to pressed "N"
+	 */
 	public void nextLvl(){
 		
 		gameScreen.setNextLvl(true);
@@ -255,6 +257,11 @@ public class GameLogic {
 		bigBullets.add(bigBullet);
 		soundMan.playBulletSound();
 	}
+	
+	public void fireBulletBoss(){
+		BulletBoss bulletBoss = new BulletBoss(boss);
+		bulletsBoss.add(bulletBoss);
+	}
 
 	/**
 	 * Move a bullet once fired from the ship.
@@ -270,7 +277,7 @@ public class GameLogic {
 			return true;
 		}
 	}
-
+	
 	/**
 	 * Move a bullet once fired from the boss.
 	 * @param bulletBoss the bullet to move
